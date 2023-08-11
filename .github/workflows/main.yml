@@ -1,14 +1,22 @@
+name: Validate YAML
+
 on:
   push:
     branches:
-    - main
-    
+      - main
+
 jobs:
-  build:
+  validate-yaml:
     runs-on: ubuntu-latest
-  - name: Validate YAML
-    uses: brittonhayes/validate-yaml
-    with:
-      schemaPath: 'schema.json'
-      files: |
-        example/*.yaml
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Validate YAML files
+      uses: adrianjost/validate-yaml-action@v1
+      with:
+        files: |
+          yaml/*.yaml
+          yml/*.yml
+          
