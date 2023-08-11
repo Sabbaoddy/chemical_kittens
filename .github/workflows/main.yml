@@ -13,10 +13,12 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
+          location: '24.9163213 121.1424972'
+          venue: '35.661777 139.704051 竹北體育館 新竹縣竹北市'
+          # message: |
+          #   ${{ github.actor }} created commit:
+          #   Commit message: ${{ github.event.commits[0].message }}
             
-            Repository: ${{ github.repository }}
+          #   Repository: ${{ github.repository }}
             
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          #   See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
