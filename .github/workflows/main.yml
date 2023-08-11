@@ -1,21 +1,14 @@
-name: 🗒 Notify - Keep me updated
+name: notify - deployment
 
-on:
-    schedule:
-      - cron: '0 0 * * *'
-    workflow_dispatch:
+on: [push]
 
 jobs:
-  notify-scan:
+  scan:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-node@v3
         with:
-          go-version: 1.17
-
-      - name: 🗒 Notify - Keep me updated
-        uses: projectdiscovery/notify-action@main
-        with:
-          data: output.txt
-          provider-config: notify-config.yaml
+          node-version: 18
+      - run: npm ci
+      - run: npm test
