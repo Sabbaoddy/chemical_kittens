@@ -1,14 +1,22 @@
-name: notify - deployment
+name: telegram message
 
 on: [push]
 
 jobs:
-  scan:
+
+  build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: send telegram message on push
+        uses: appleboy/telegram-action@master
         with:
-          node-version: 18
-      - run: npm ci
-      - run: npm test
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            
+            Repository: ${{ github.repository }}
+            
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
