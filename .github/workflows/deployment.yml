@@ -17,8 +17,8 @@ jobs:
       - name: send telegram message on push
         uses: appleboy/telegram-action@master
         with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_ID }}
+          to: ${{ env.TELEGRAM_CHAT_ID }}
+          token: ${{ env.TELEGRAM_BOT_ID }}
         run: |
           echo ${{ GITHUB.REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
