@@ -1,6 +1,12 @@
-- name: Validate YAML
-  uses: brittonhayes/validate-yaml
-  with:
-    schemaPath: 'schema.json'
-    files: |
-      example/*.yaml
+on:
+  push:
+    branches:
+    - main
+    
+jobs:
+  - name: Validate YAML
+    uses: brittonhayes/validate-yaml
+    with:
+      schemaPath: 'schema.json'
+      files: |
+        example/*.yaml
