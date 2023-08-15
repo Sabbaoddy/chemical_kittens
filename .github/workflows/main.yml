@@ -21,24 +21,24 @@ jobs:
         uses: actions/checkout@v3
 
   build-failed:
-      name: Notify build failed
-      needs: build
-      if: ${{ always() && contains(join(needs.build.result, ','), 'failure') }}
-      runs-on: ubuntu-20.04
-      timeout-minutes: 5
-      steps:
-        - name: checkout code
-          uses: actions/checkout@v3
+    name: Notify build failed
+    needs: build
+    if: ${{ always() && contains(join(needs.build.result, ','), 'failure') }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
 
-        - name: notify
-          run: |-
-            echo ${{ env.GITHUB_REPO }} >> intro.txt
-            echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
-            echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-            echo "Build%20DEVELOPMENT" > message
-            echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
-            chmod +x deployment/notify/failed.sh
-            ./deployment/notify/failed.sh
+      - name: notify
+        run: |-
+          echo ${{ env.GITHUB_REPO }} >> intro.txt
+          echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
+          echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
+          echo "Build%20DEVELOPMENT" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
+          chmod +x deployment/notify/failed.sh
+          ./deployment/notify/failed.sh
 
   build-success:
     name: Notify build success
