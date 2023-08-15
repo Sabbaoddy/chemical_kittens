@@ -1,0 +1,53 @@
+name: telegram notify
+on:
+  push:
+    branches:
+      - main
+
+env:
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TELEGRAM_BOT_ID: ${{ secrets.TELEGRAM_BOT_ID }}
+  GITHUB_REPO: ${{ github.repository }}
+  GITHUB_URL: ${{ github.server_url }}/${{ github.repository }}/actions/
+  GITHUB_ACTIONS_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+jobs:
+  build-failed:
+      name: Notify build failed
+      needs: build
+      if: ${{ always() && contains(join(needs.build.result, ','), 'failure') }}
+      runs-on: ubuntu-20.04
+      timeout-minutes: 5
+      steps:
+        - name: checkout code
+          uses: actions/checkout@v3
+
+        - name: notify
+          run: |-
+            echo ${{ env.GITHUB_REPO }} >> intro.txt
+            echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
+            echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
+            echo "Build%20DEVELOPMENT" > message
+            echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
+            chmod +x deployment/config/failed.sh
+            ./deployment/config/failed.sh
+
+  build-success:
+    name: Notify build success
+    needs: build
+    if: ${{ always() && contains(join(needs.build.result, ','), 'success') }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: notify
+        run: |-
+          echo ${{ env.GITHUB_REPO }} >> intro.txt
+          echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
+          echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
+          echo "Build%20DEVELOPMENT" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
+          chmod +x deployment/config/success.sh
+          ./deployment/config/success.sh
