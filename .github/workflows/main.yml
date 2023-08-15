@@ -61,24 +61,24 @@ jobs:
           ./deployment/notify/success.sh
 
   deploy-failed:
-  name: Notify deploy failed
-  needs: deploy
-  if: ${{ always() && contains(join(needs.deploy.result, ','), 'failure') }}
-  runs-on: ubuntu-20.04
-  timeout-minutes: 5
-  steps:
-    - name: checkout code
-      uses: actions/checkout@v3
+    name: Notify deploy failed
+    needs: deploy
+    if: ${{ always() && contains(join(needs.deploy.result, ','), 'failure') }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
 
-    - name: notify
-      run: |-
-        echo ${{ env.GITHUB_REPO }} >> intro.txt
-        echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
-        echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-        echo "Deploy%20DEVELOPMENT" > message
-        echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
-        chmod +x deployment/config/failed.sh
-        ./deployment/config/failed.sh
+      - name: notify
+        run: |-
+          echo ${{ env.GITHUB_REPO }} >> intro.txt
+          echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
+          echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
+          echo "Deploy%20DEVELOPMENT" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
+          chmod +x deployment/config/failed.sh
+          ./deployment/config/failed.sh
 
   deploy-success:
     name: Notify deploy success
