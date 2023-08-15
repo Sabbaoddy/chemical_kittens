@@ -35,7 +35,7 @@ jobs:
             echo ${{ env.GITHUB_REPO }} >> intro.txt
             echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
             echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-            echo "Build%20DEVELOPMENT" > message
+            echo "Build%20DEVELOPMENT" git log -1 --pretty=format:"%h - %an, %ar : %s" > message
             echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
             chmod +x deployment/notify/failed.sh
             ./deployment/notify/failed.sh
@@ -55,7 +55,7 @@ jobs:
           echo ${{ env.GITHUB_REPO }} >> intro.txt
           echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-          echo "Build%20DEVELOPMENT" > message
+          echo "Build%20DEVELOPMENT" git log -1 --pretty=format:"%h - %an, %ar : %s" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
           chmod +x deployment/notify/success.sh
           ./deployment/notify/success.sh
