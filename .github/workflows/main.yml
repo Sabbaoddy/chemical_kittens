@@ -20,25 +20,41 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v3
 
-  build-failed:
-      name: Notify build failed
-      needs: build
-      if: ${{ always() && contains(join(needs.build.result, ','), 'failure') }}
-      runs-on: ubuntu-20.04
-      timeout-minutes: 5
-      steps:
-        - name: checkout code
-          uses: actions/checkout@v3
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    steps:
+      - name: preparing artifact name
+        uses: actions/download-artifact@v3
+        with:
+          name: ARTIFACT_NAME
 
-        - name: notify
-          run: |-
-            echo ${{ env.GITHUB_REPO }} >> intro.txt
-            echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
-            echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
-            echo "Build%20DEVELOPMENT" > message
-            echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
-            chmod +x deployment/notify/failed.sh
-            ./deployment/notify/failed.sh
+      - name: preparing artifact name
+        run: |-
+          ARTIFACT_NAME=`cat ARTIFACT_NAME.txt`
+          echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
+
+  build-failed:
+    name: Notify build failed
+    needs: build
+    if: ${{ always() && contains(join(needs.build.result, ','), 'failure') }}
+    runs-on: ubuntu-20.04
+    timeout-minutes: 5
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: notify
+        run: |-
+          echo ${{ env.GITHUB_REPO }} >> intro.txt
+          echo ${{ env.TELEGRAM_CHAT_ID }} > chat_id
+          echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
+          echo "Build%20DEVELOPMENT" > message
+          echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
+          chmod +x deployment/notify/failed.sh
+          ./deployment/notify/failed.sh
 
   build-success:
     name: Notify build success
