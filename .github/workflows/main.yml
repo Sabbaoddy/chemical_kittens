@@ -15,7 +15,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-20.04
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-20.04
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: preparing artifact name
         uses: actions/download-artifact@v3
@@ -47,7 +47,7 @@ jobs:
     needs: build
     if: ${{ always() && contains(join(needs.build.result, ','), 'failure') }}
     runs-on: ubuntu-20.04
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -67,7 +67,7 @@ jobs:
     needs: build
     if: ${{ always() && contains(join(needs.build.result, ','), 'success') }}
     runs-on: ubuntu-20.04
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -87,7 +87,7 @@ jobs:
     needs: deploy
     if: ${{ always() && contains(join(needs.deploy.result, ','), 'failure') }}
     runs-on: ubuntu-20.04
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: checkout code
         uses: actions/checkout@v3
@@ -107,7 +107,7 @@ jobs:
     needs: deploy
     if: ${{ always() && contains(join(needs.deploy.result, ','), 'success') }}
     runs-on: ubuntu-20.04
-    timeout-minutes: 5
+    timeout-minutes: 7
     steps:
       - name: checkout code
         uses: actions/checkout@v3
