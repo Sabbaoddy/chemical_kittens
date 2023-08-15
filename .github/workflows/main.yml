@@ -93,8 +93,8 @@ jobs:
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
           echo "Deploy%20DEVELOPMENT" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
-          chmod +x deployment/config/failed.sh
-          ./deployment/config/failed.sh
+          chmod +x deployment/notify/failed.sh
+          ./deployment/notify/failed.sh
 
   deploy-success:
     name: Notify deploy success
@@ -113,5 +113,5 @@ jobs:
           echo ${{ env.TELEGRAM_BOT_ID }} > bot_id
           echo "Deploy%20DEVELOPMENT" > message
           echo "Log: ${{ env.GITHUB_ACTIONS_URL }}" >> log.txt
-          chmod +x deployment/config/success.sh
-          ./deployment/config/success.sh
+          chmod +x deployment/notify/success.sh
+          ./deployment/notify/success.sh
